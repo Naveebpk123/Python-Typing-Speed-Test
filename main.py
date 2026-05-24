@@ -1,6 +1,7 @@
 import time
 import random
 from tkinter import *
+from settings import SettingsWindow, themes
 
 def get_text():
     # Open file and read lines, stripping whitespace and ignoring empty lines
@@ -51,13 +52,52 @@ def start_test():
 
     input_entry.bind("<Return>", on_enter) # Bind the Enter key to trigger the on_enter function when pressed
 
+def apply_settings(config):
+    # Retrieve colors dynamically from the processed config payload
+    bg_color = config["bg"]
+    text_color = config["text"]
+    
+    # Apply to Main Window
+    root.config(bg=bg_color) 
+    
+    # Apply to App Widgets dynamically to maintain contrast visibility
+    welcome_label.config(bg=bg_color, fg=text_color)
+    paragraph_label.config(bg=bg_color, fg=text_color)
+    result_label.config(bg=bg_color, fg=text_color)
+    start_button.config(
+        bg=themes[config["theme"]].get("button_bg", "#FF7D40"), 
+        fg=text_color, 
+        activebackground=themes[config["theme"]].get("button_bg", "#FF7D40"),
+        bd=1, relief=SOLID # <-- Gives it a crisp, themed border
+    )
+    settings_button.config(
+        bg=themes[config["theme"]].get("button_bg", "#FF7D40"), 
+        fg=text_color, 
+        activebackground=themes[config["theme"]].get("button_bg", "#FF7D40"),
+        bd=1, relief=SOLID # <-- Consistent styling with the start button for a cohesive look
+    )
+    
+    # Input field handling: Base white bg with matching text, 
+    # except when using Dark or Sci-Fi modes where an entry box looks cleaner muted.
+    if config["theme"] in ["Dark", "Sci-Fi"]:
+        input_entry.config(bg="#1E1E1E", fg=text_color, insertbackground=text_color) # insertbackground fixes the flashing cursor color
+    else:
+        input_entry.config(bg="white", fg="black", insertbackground="black")
+
 # -- GUI Setup --
 root = Tk()
 root.title("Typing Test")
 root.geometry("600x500")
 root.config(padx=20, pady=20,bg="#FF7D40") # Set the background color of the window to a bright orange for a more vibrant look
 
-Label(root, text="Welcome to the Typing Test!", font=("Arial", 16), bg="#FF7D40").pack(pady=10) # Welcome label at the top of the window
+settings_window = SettingsWindow(root, apply_settings) # Create an instance of the settings window, passing the apply_settings function as a callback
+
+# Settings button to open the settings window, styled with a background color that matches the default theme for consistency
+settings_button = Button(root, text="⚙ Settings", command=lambda: settings_window.create_window())
+settings_button.pack(padx=10,side='top',anchor='nw')
+
+welcome_label = Label(root, text="Welcome to the Typing Test!", font=("Arial", 16), bg="#FF7D40")
+welcome_label.pack(pady=10)
 
 # Label to display the paragraph for the typing test, with a wrap length of 500 pixels for better readability
 paragraph_label = Label(root, text="", wraplength=500, font=("Arial", 14), bg="#FF7D40")
