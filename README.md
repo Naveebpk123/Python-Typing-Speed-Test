@@ -1,60 +1,101 @@
-# Typing Test Project
+# Python Typing Speed Test
 
-A simple typing speed test application built with Python and Tkinter.
+A modern desktop typing speed test application built with Python and Tkinter, featuring real-time typing analytics, dynamic theme customization, and a modular architecture.
 
 ## Features
 
-- Random paragraph generation
-- Typing accuracy calculation
-- Words Per Minute (WPM) tracking
-- Simple GUI using Tkinter
-- Timer-based typing test
+- Random paragraph generation from a local text pool
+- Real-time WPM (Words Per Minute) calculation
+- Live accuracy tracking
+- Elapsed time monitoring
+- Safe metric calculations protected against division-by-zero crashes
+- Dedicated settings window for UI customization
+- Multiple built-in themes:
+  - Default (Vibrant Orange)
+  - Dark Mode (Slate Charcoal)
+  - Light Mode
+  - Sci-Fi Theme (Neon-inspired)
+- Live theme synchronization across dropdown menus
+- Read-only comboboxes to prevent invalid user input
+- Modular callback-based architecture for clean communication between files
+
+---
 
 ## Technologies Used
 
-- Python
+- Python 3
 - Tkinter
+- TTK (Tile Toolkit)
+
+---
 
 ## Project Structure
 
 ```text
-typing_test_project/
+Python-Typing-Speed-Test/
 │
-├── main.py
-├── text.txt
-├── README.md
-└── .gitignore
+├── main.py          # Main application logic and UI
+├── settings.py      # Theme and customization manager
+├── text.txt         # Paragraph/text database
+└── README.md        # Project documentation
 ```
+
+---
 
 ## How to Run
 
-1. Make sure Python is installed.
-2. Clone this repository:
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Naveebpk123/typing_test_project.git
+git clone https://github.com/Naveebpk123/Python-Typing-Speed-Test.git
 ```
 
-3. Navigate into the project folder:
+### 2. Navigate Into the Project Folder
 
 ```bash
-cd typing_test_project
+cd Python-Typing-Speed-Test
 ```
 
-4. Run the program:
+### 3. Run the Application
 
 ```bash
 python main.py
 ```
 
+---
+
+## How It Works
+
+### Parent → Child Callback Architecture
+
+When the settings window is opened, `main.py` passes a callback function into `settings.py`.
+
+After the user applies changes, the settings module sends the selected configuration back to the main application through the callback system. This keeps the architecture modular while avoiding circular imports and unnecessary global dependencies.
+
+---
+
+## Metrics System
+
+The application continuously tracks:
+
+- Typing speed (WPM)
+- Accuracy percentage
+- Elapsed time
+
+All calculations are safely guarded against invalid states and runtime crashes.
+
+---
+
 ## Future Improvements
 
-- Add countdown timer
-- Add dark mode
-- Save high scores
-- Add difficulty levels
-- Better accuracy checking
+- Add a live countdown timer mode
+- Save local high scores and statistics
+- Add difficulty modes with advanced vocabulary pools
+
+---
 
 ## Author
 
 Created by Naveeb Pacheerikkuth
+
+GitHub: https://github.com/Naveebpk123
